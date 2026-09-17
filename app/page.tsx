@@ -15,7 +15,8 @@ const process = [
 
 export default function Home() {
   return (
-    <main>
+    <main id="main-content">
+      <a className="skip-link" href="#hero-title">Skip to content</a>
       <Navbar />
       <section className="hero" id="top" aria-labelledby="hero-title">
         <div className="hero-copy">
@@ -31,7 +32,7 @@ export default function Home() {
         </div>
         <div className="hero-visual">
           <div className="hero-image-frame">
-            <Image src={heroImage} alt="Warm contemporary living space opening onto a tropical garden" fill priority sizes="(max-width: 900px) 100vw, 64vw" className="cover-image" />
+            <Image src={heroImage} alt="Warm contemporary living space opening onto a tropical garden" fill priority sizes="(max-width: 760px) 100vw, 50vw" className="cover-image" />
           </div>
           <div className="hero-caption"><span>Living spaces, considered</span><span>Northvale Studio</span></div>
         </div>
@@ -65,7 +66,7 @@ export default function Home() {
           </Reveal>
           <Reveal className="service-list" delay={0.08}>
             {services.map(([number, title]) => (
-              <div className="service-row" key={title}><span>{number}</span><h3>{title}</h3><span className="service-arrow" aria-hidden="true">↗</span></div>
+              <div className="service-row" key={title}><span>{number}</span><h3>{title}</h3></div>
             ))}
           </Reveal>
         </div>
@@ -121,7 +122,7 @@ export default function Home() {
       </section>
 
       <footer className="footer page-shell">
-        <div className="footer-brand"><a className="wordmark" href="#top">Northvale</a><p>Architecture &amp; Interior Design</p></div>
+        <div className="footer-brand"><a className="wordmark" href="#top" aria-label="Northvale Studio home">Northvale<small>Studio</small></a><p>Architecture &amp; Interior Design</p></div>
         <nav aria-label="Footer navigation">{["Projects", "Studio", "Services", "Contact"].map((item) => <a key={item} href={`#${item.toLowerCase()}`}>{item}</a>)}</nav>
         <div className="footer-social"><a href="https://www.instagram.com" target="_blank" rel="noreferrer">Instagram ↗</a><a href="https://www.pinterest.com" target="_blank" rel="noreferrer">Pinterest ↗</a></div>
         <p className="copyright">© 2026 Northvale Studio</p>

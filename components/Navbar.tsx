@@ -1,7 +1,8 @@
 "use client";
 
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
+import { Sheet, SheetClose, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 
 const links = [
   { label: "Projects", href: "#projects" },
@@ -13,7 +14,6 @@ const links = [
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const reduceMotion = useReducedMotion();
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 32);
@@ -23,57 +23,42 @@ export function Navbar() {
   }, []);
 
   useEffect(() => {
-    document.body.style.overflow = isOpen ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
-  }, [isOpen]);
+    const desktop = window.matchMedia("(min-width: 761px)");
+    const closeOnDesktop = () => { if (desktop.matches) setIsOpen(false); };
+    desktop.addEventListener("change", closeOnDesktop);
+    return () => desktop.removeEventListener("change", closeOnDesktop);
+  }, []);
 
   return (
-    <>
-      <header className={`site-header${isScrolled || isOpen ? " is-scrolled" : ""}`}>
-        <a className="wordmark" href="#top" aria-label="Northvale Studio home">Northvale</a>
-        <nav className="desktop-nav" aria-label="Primary navigation">
-          {links.map((link) => <a key={link.href} href={link.href}>{link.label}</a>)}
-        </nav>
-        <a className="nav-cta" href="mailto:hello@northvale.studio">Start a Project <span aria-hidden="true">↗</span></a>
-        <button
-          className="menu-button"
-          type="button"
-          aria-expanded={isOpen}
-          aria-controls="mobile-menu"
-          aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
-          onClick={() => setIsOpen((value) => !value)}
-        >
-          <span>{isOpen ? "Close" : "Menu"}</span>
-        </button>
-      </header>
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            id="mobile-menu"
-            className="mobile-menu"
-            initial={reduceMotion ? false : { opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: reduceMotion ? 0 : 0.35 }}
-          >
-            <nav aria-label="Mobile navigation">
-              {links.map((link, index) => (
-                <motion.a
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setIsOpen(false)}
-                  initial={reduceMotion ? false : { opacity: 0, y: 18 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: reduceMotion ? 0 : 0.08 + index * 0.06 }}
-                >
-                  <span>0{index + 1}</span>{link.label}
-                </motion.a>
-              ))}
-            </nav>
+    <header className={`site-header${isScrolled ? " is-scrolled" : ""}`}>
+      <a className="wordmark" href="#top" aria-label="Northvale Studio home">Northvale<small>Studio</small></a>
+      <nav className="desktop-nav" aria-label="Primary navigation">
+        {links.map((link) => <a key={link.href} href={link.href}>{link.label}</a>)}
+      </nav>
+      <a className="nav-cta" href="mailto:hello@northvale.studio">Start a Project <span aria-hidden="true">↗</span></a>
+      <Sheet open={isOpen} onOpenChange={setIsOpen}>
+        <SheetTrigger asChild>
+          <button className="menu-button" type="button" aria-label="Open navigation menu">
+            Menu <Menu size={16} aria-hidden="true" />
+          </button>
+        </SheetTrigger>
+        <SheetContent className="mobile-menu" showCloseButton={false} aria-describedby={undefined}>
+          <div className="mobile-menu-heading">
+            <SheetTitle className="mobile-menu-title">Northvale Studio</SheetTitle>
+            <SheetClose asChild><button className="menu-close" type="button" aria-label="Close navigation menu"><X size={20} aria-hidden="true" /></button></SheetClose>
+          </div>
+          <nav aria-label="Mobile navigation">
+            {links.map((link, index) => (
+              <SheetClose asChild key={link.href}>
+                <a href={link.href}><span aria-hidden="true">0{index + 1}</span>{link.label}</a>
+              </SheetClose>
+            ))}
+          </nav>
+          <SheetClose asChild>
             <a className="mobile-contact" href="mailto:hello@northvale.studio">hello@northvale.studio <span aria-hidden="true">↗</span></a>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </>
+          </SheetClose>
+        </SheetContent>
+      </Sheet>
+    </header>
   );
 }

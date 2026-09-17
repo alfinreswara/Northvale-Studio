@@ -11,11 +11,11 @@ export function ProjectEntry({ project }: { project: Project }) {
             src={project.image}
             alt={project.alt}
             fill
-            sizes={project.number === "01" ? "(max-width: 767px) 100vw, 92vw" : "(max-width: 767px) 100vw, 55vw"}
+            sizes={project.number === "01" ? "(max-width: 760px) 100vw, (max-width: 1408px) 92vw, 1312px" : "(max-width: 760px) 100vw, (max-width: 1408px) 46vw, 640px"}
             className="cover-image"
             style={{ objectPosition: project.position }}
           />
-          <span className="project-view" aria-hidden="true">View project ↗</span>
+          <span className="project-view" aria-hidden="true">Enquire about this project ↗</span>
         </div>
         <div className="project-meta">
           <div className="project-heading">
