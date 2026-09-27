@@ -9,9 +9,14 @@ const eslintConfig = defineConfig([
   globalIgnores([
     // Default ignores of eslint-config-next:
     ".next/**",
+    ".sites-runtime/**",
+    ".vinext/**",
+    ".wrangler/**",
+    "dist/**",
     "out/**",
     "build/**",
     "next-env.d.ts",
+    "*.tsbuildinfo",
   ]),
   {
     files: ["components/ui/**/*.{ts,tsx}", "hooks/use-mobile.ts"],
